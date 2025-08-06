@@ -11,5 +11,11 @@ namespace OpenUpData.Models
         public int NrOfReports { get; set; }
         public DateTime Datecreated { get; set; }
         public DateTime DateUpdated { get; set; }
+
+        // foreign Key
+        public int UserId { get; set; }
+
+        // Navigation property
+        public User User { get; set; }
     }
 }
