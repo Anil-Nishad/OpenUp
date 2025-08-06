@@ -24,11 +24,11 @@ namespace OpenUp.Migrations
 
             modelBuilder.Entity("OpenUp.Data.Models.Post", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -46,7 +46,7 @@ namespace OpenUp.Migrations
                     b.Property<int>("NrOfReports")
                         .HasColumnType("int");
 
-                    b.HasKey("PostId");
+                    b.HasKey("Id");
 
                     b.ToTable("Posts");
                 });
