@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OpenUp.Data.Models;
+using OpenUpData.Models;
 
-namespace OpenUp.Data
+namespace OpenUpData
 {
     public class OpenUpContext : DbContext
     {
@@ -9,5 +9,6 @@ namespace OpenUp.Data
         {
         }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using OpenUp.Data;
+using OpenUpData;
 
 var builder = WebApplication.CreateBuilder(args);
 

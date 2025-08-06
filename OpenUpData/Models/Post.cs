@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OpenUp.Data.Models
+namespace OpenUpData.Models
 {
     public class Post
     {
