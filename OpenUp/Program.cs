@@ -19,7 +19,7 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<OpenUpContext>();
     await dbContext.Database.MigrateAsync(); // Ensure the database is created and migrations are applied
-    DbInitializer.Seed(dbContext);
+    await DbInitializer.Seed(dbContext);
 }
 
 // Configure the HTTP request pipeline.
