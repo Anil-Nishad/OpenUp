@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OpenUpData;
+using OpenUpData.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,14 @@ builder.Services.AddDbContext<OpenUpContext>(options =>
     options.UseSqlServer(dbConnectionString));
 
 var app = builder.Build();
+
+// Initialize the database with sample data
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<OpenUpContext>();
+    await dbContext.Database.MigrateAsync(); // Ensure the database is created and migrations are applied
+    DbInitializer.Seed(dbContext);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
