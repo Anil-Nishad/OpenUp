@@ -31,7 +31,7 @@ namespace OpenUp.Controllers
         public async Task<IActionResult> CreatePost(PostVM post)
         {
             //Get the Logged in User
-            int loggedInUser = 1;
+            int loggedInUser = 2;
 
             //Create a new Post
             var newPost = new Post
@@ -41,6 +41,27 @@ namespace OpenUp.Controllers
                 DateUpdated = DateTime.Now,
                 UserId = loggedInUser
             };
+
+            //Check if an image is uploaded
+            if (post.Image != null && post.Image.Length > 0)
+            {
+                string rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                if (post.Image.ContentType.Contains("image"))
+                {
+                    string rootFolderPathImages = Path.Combine(rootFolderPath, "images/uploaded");
+                    Directory.CreateDirectory(rootFolderPathImages);
+
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(post.Image.FileName);
+                    string filePath = Path.Combine(rootFolderPathImages, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                        await post.Image.CopyToAsync(stream);
+
+                    //Set the URL to the newPost object
+                    newPost.ImageUrl = "/images/uploaded/" + fileName;
+                }
+            }
+
             await _context.Posts.AddAsync(newPost);
             await _context.SaveChangesAsync();
 
