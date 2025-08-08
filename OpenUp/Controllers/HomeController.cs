@@ -30,6 +30,15 @@ namespace OpenUp.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostVM post)
         {
+            // Check if content is empty or null
+            if (string.IsNullOrWhiteSpace(post?.Content))
+            {
+                ModelState.AddModelError("Content", "Content is required.");
+                // Optionally, you can return the same view with the model to show validation errors
+                // return View("Index", await _context.Posts.Include(n => n.User).OrderByDescending(n => n.DateCreated).ToListAsync());
+                return BadRequest("Content is required.");
+            }
+
             //Get the Logged in User
             int loggedInUser = 2;
 
