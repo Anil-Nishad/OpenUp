@@ -18,20 +18,20 @@ namespace OpenUpData.Helpers
                 return; // Database has been seeded
             }
             // Create sample users
-            var user1 = new User { Name = "Alice", ProfilePictureUrl = "https://drive.google.com/file/d/1s4QhuSEwlBT-MeUVZibLwEAC2eM1Bev5/view?usp=drive_link" };
-            var user2 = new User { Name = "Bob", ProfilePictureUrl = "https://www.pexels.com/photo/elegant-portrait-of-a-woman-in-cozy-attire-31036772/" };
+            var user1 = new User { FullName = "Alice", ProfilePictureUrl = "https://drive.google.com/file/d/1s4QhuSEwlBT-MeUVZibLwEAC2eM1Bev5/view?usp=drive_link" };
+            var user2 = new User { FullName = "Bob", ProfilePictureUrl = "https://www.pexels.com/photo/elegant-portrait-of-a-woman-in-cozy-attire-31036772/" };
             await context.Users.AddRangeAsync(user1, user2);
             await context.SaveChangesAsync();
             // Create sample posts
-            var post1 = new Post { Content = "Hello World!", UserId = user1.Id, Datecreated = DateTime.Now, DateUpdated = DateTime.Now };
-            var post2 = new Post { Content = "Learning Entity Framework Core!", UserId = user2.Id, Datecreated = DateTime.Now, DateUpdated = DateTime.Now };
+            var post1 = new Post { Content = "Hello World!", UserId = user1.Id, DateCreated = DateTime.Now, DateUpdated = DateTime.Now };
+            var post2 = new Post { Content = "Learning Entity Framework Core!", UserId = user2.Id, DateCreated = DateTime.Now, DateUpdated = DateTime.Now };
             var post3 = new Post()
             {
                 Content = "Learning MVC!",
                 ImageUrl = "https://www.pexels.com/photo/cozy-outdoor-campfire-tea-and-coffee-mugs-32973553/",
                 NrOfReports = 0,
                 UserId = user1.Id,
-                Datecreated = DateTime.Now,
+                DateCreated = DateTime.Now,
                 DateUpdated = DateTime.Now
             };
             await context.Posts.AddRangeAsync(post1, post2, post3);
