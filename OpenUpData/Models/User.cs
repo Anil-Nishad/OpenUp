@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CircleApp.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace OpenUpData.Models
 
         // Navigation properties
         public ICollection<Post> Posts { get; set; } = new List<Post>();
+        public ICollection<Like> Likes { get; set; } = new List<Like>();
     }
 }

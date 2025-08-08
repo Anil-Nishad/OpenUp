@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CircleApp.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace OpenUpData.Models
 {
@@ -17,5 +18,6 @@ namespace OpenUpData.Models
 
         // Navigation property
         public User User { get; set; }
+        public ICollection<Like> Likes { get; set; } = new List<Like>();
     }
 }
