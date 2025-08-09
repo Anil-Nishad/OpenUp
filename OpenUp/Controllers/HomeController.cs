@@ -1,9 +1,10 @@
-using System.Diagnostics;
+using CircleApp.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenUp.ViewModels.Home;
 using OpenUpData;
 using OpenUpData.Models;
+using System.Diagnostics;
 
 namespace OpenUp.Controllers
 {
@@ -22,6 +23,7 @@ namespace OpenUp.Controllers
         {
             var allPosts = await _context.Posts
                         .Include(n => n.User)
+                        .Include(n => n.Likes)
                         .OrderByDescending(n => n.DateCreated)
                         .ToListAsync();
             return View(allPosts);
@@ -75,6 +77,35 @@ namespace OpenUp.Controllers
             await _context.SaveChangesAsync();
 
             //Redirect to the Index Page
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TogglePostLike(PostLikeVM postLikeVM)
+        {
+            int loggedInUserId = 1;
+
+            //check if user has already liked the post
+            var like = await _context.Likes
+                .Where(l => l.PostId == postLikeVM.PostId && l.UserId == loggedInUserId)
+                .FirstOrDefaultAsync();
+
+            if (like != null)
+            {
+                _context.Likes.Remove(like);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                var newLike = new Like()
+                {
+                    PostId = postLikeVM.PostId,
+                    UserId = loggedInUserId
+                };
+                await _context.Likes.AddAsync(newLike);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction("Index");
         }
 
