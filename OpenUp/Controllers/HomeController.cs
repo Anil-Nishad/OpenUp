@@ -24,6 +24,8 @@ namespace OpenUp.Controllers
             var allPosts = await _context.Posts
                         .Include(n => n.User)
                         .Include(n => n.Likes)
+                        .Include(n => n.Favorites)
+                        .Include(n => n.Comments).ThenInclude(n => n.User)
                         .OrderByDescending(n => n.DateCreated)
                         .ToListAsync();
             return View(allPosts);
@@ -32,17 +34,8 @@ namespace OpenUp.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostVM post)
         {
-            // Check if content is empty or null
-            if (string.IsNullOrWhiteSpace(post?.Content))
-            {
-                ModelState.AddModelError("Content", "Content is required.");
-                // Optionally, you can return the same view with the model to show validation errors
-                // return View("Index", await _context.Posts.Include(n => n.User).OrderByDescending(n => n.DateCreated).ToListAsync());
-                return BadRequest("Content is required.");
-            }
-
-            //Get the Logged in User
-            int loggedInUser = 2;
+            //Get the logged in user
+            int loggedInUser = 1;
 
             //Create a new Post
             var newPost = new Post
@@ -73,6 +66,7 @@ namespace OpenUp.Controllers
                 }
             }
 
+            //Add the post to the database
             await _context.Posts.AddAsync(newPost);
             await _context.SaveChangesAsync();
 
@@ -110,6 +104,35 @@ namespace OpenUp.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> TogglePostFavorite(PostFavoriteVM postFavoriteVM)
+        {
+            int loggedInUserId = 1;
+
+            //check if user has already favorited the post
+            var favorite = await _context.Favorites
+                .Where(l => l.PostId == postFavoriteVM.PostId && l.UserId == loggedInUserId)
+                .FirstOrDefaultAsync();
+
+            if (favorite != null)
+            {
+                _context.Favorites.Remove(favorite);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                var newFavorite = new Favorite()
+                {
+                    PostId = postFavoriteVM.PostId,
+                    UserId = loggedInUserId
+                };
+                await _context.Favorites.AddAsync(newFavorite);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddPostComment(PostCommentVM postCommentVM)
         {
             int loggedInUserId = 1;
@@ -125,6 +148,20 @@ namespace OpenUp.Controllers
             };
             await _context.Comments.AddAsync(newComment);
             await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemovePostComment(RemoveCommentVM removeCommentVM)
+        {
+            var commentDb = await _context.Comments.FirstOrDefaultAsync(c => c.Id == removeCommentVM.CommentId);
+
+            if (commentDb != null)
+            {
+                _context.Comments.Remove(commentDb);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction("Index");
         }
