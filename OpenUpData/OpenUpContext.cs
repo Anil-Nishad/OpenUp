@@ -23,7 +23,7 @@ namespace OpenUpData
                 .HasForeignKey(p => p.UserId);
 
             modelBuilder.Entity<Like>()
-               .HasKey(l => new { l.PostId, l.UserId });
+                .HasKey(l => new { l.PostId, l.UserId });
 
             modelBuilder.Entity<Like>()
                 .HasOne(l => l.Post)

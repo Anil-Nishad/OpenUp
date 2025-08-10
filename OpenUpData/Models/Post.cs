@@ -13,6 +13,7 @@ namespace OpenUpData.Models
         public bool IsPrivate { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
+        public bool IsDeleted { get; set; }
 
         // foreign Key
         public int UserId { get; set; }
