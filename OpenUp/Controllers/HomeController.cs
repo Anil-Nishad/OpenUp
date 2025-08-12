@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenUp.ViewModels.Home;
 using OpenUpData;
+using OpenUpData.Helpers;
 using OpenUpData.Models;
 using System.Diagnostics;
 
@@ -72,6 +73,35 @@ namespace OpenUp.Controllers
 
             //Add the post to the database
             await _context.Posts.AddAsync(newPost);
+            await _context.SaveChangesAsync();
+
+            var postHashtags = HashtagHelper.GetHashtags(post.Content);
+
+            // Save hashtags to the database
+            foreach (var hashtag in postHashtags)
+            {
+                var existingHashtag = await _context.Hashtags
+                    .FirstOrDefaultAsync(h => h.Name == hashtag);
+
+                if (existingHashtag != null)
+                {
+                    existingHashtag.Count++;
+                    existingHashtag.DateUpdated = DateTime.UtcNow;
+                    _context.Hashtags.Update(existingHashtag);
+                }
+                else
+                {
+                    var newHashtag = new Hashtag
+                    {
+                        Name = hashtag,
+                        Count = 1,
+                        DateCreated = DateTime.UtcNow,
+                        DateUpdated = DateTime.UtcNow
+                    };
+                    await _context.Hashtags.AddAsync(newHashtag);
+                }
+            }
+
             await _context.SaveChangesAsync();
 
             //Redirect to the Index Page
@@ -218,8 +248,31 @@ namespace OpenUp.Controllers
                 postDb.IsDeleted = true;
                 _context.Posts.Update(postDb);
                 await _context.SaveChangesAsync();
-            }
 
+                //Update Hashtags count
+                var postHashtags = HashtagHelper.GetHashtags(postDb.Content);
+                foreach (var hashtag in postHashtags)
+                {
+                    var existingHashtag = await _context.Hashtags
+                        .FirstOrDefaultAsync(h => h.Name == hashtag);
+                    if (existingHashtag != null)
+                    {
+                        existingHashtag.Count--;
+                        if (existingHashtag.Count <= 0)
+                        {
+                            _context.Hashtags.Remove(existingHashtag);
+                            await _context.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            existingHashtag.DateUpdated = DateTime.UtcNow;
+                            _context.Hashtags.Update(existingHashtag);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+            }
+           
             return RedirectToAction("Index");
         }
 
