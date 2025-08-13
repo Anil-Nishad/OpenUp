@@ -18,6 +18,7 @@ namespace CircleApp.ViewComponents
             var allStories = await _context.Stories
                 .Where(n=> n.DateCreated >= DateTime.UtcNow.AddHours(-24)) // Get stories from the last 24 hours
                 .Include(s => s.User)
+                .OrderByDescending(s => s.DateCreated)
                 .ToListAsync();
             return View(allStories);
         }

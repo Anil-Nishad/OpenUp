@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OpenUpData;
 using OpenUpData.Helpers;
+using OpenUpData.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddControllersWithViews();
 var dbConnectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<OpenUpContext>(options =>
     options.UseSqlServer(dbConnectionString));
+
+//Services configuration
+builder.Services.AddScoped<IPostsService, PostsService>();
 
 var app = builder.Build();
 
