@@ -16,6 +16,7 @@ builder.Services.AddDbContext<OpenUpContext>(options =>
 //Services configuration
 builder.Services.AddScoped<IPostsService, PostsService>();
 builder.Services.AddScoped<IHashtagsService, HashtagsService>();
+builder.Services.AddScoped<IStoriesService, StoriesService>();
 
 var app = builder.Build();
 

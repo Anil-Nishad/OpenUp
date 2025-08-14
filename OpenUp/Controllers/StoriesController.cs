@@ -3,16 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using OpenUp.ViewModels.Stories;
 using OpenUpData;
 using OpenUpData.Models;
+using OpenUpData.Services;
 using System;
 
 namespace OpenUp.Controllers
 {
     public class StoriesController : Controller
     {
-        private readonly OpenUpContext _context;
-        public StoriesController(OpenUpContext context)
+        private readonly IStoriesService _storiesService;
+        public StoriesController(IStoriesService storiesService)
         {
-            _context = context;
+            _storiesService = storiesService;
         }
 
         //public async Task<IActionResult> Index()
@@ -33,28 +34,7 @@ namespace OpenUp.Controllers
                 UserId = loggedInUserId
             };
 
-            //Check and save the image
-            if (storyVM.Image != null && storyVM.Image.Length > 0)
-            {
-                string rootFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                if (storyVM.Image.ContentType.Contains("image"))
-                {
-                    string rootFolderPathImages = Path.Combine(rootFolderPath, "images/stories");
-                    Directory.CreateDirectory(rootFolderPathImages);
-
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(storyVM.Image.FileName);
-                    string filePath = Path.Combine(rootFolderPathImages, fileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                        await storyVM.Image.CopyToAsync(stream);
-
-                    //Set the URL to the newPost object
-                    newStory.ImageUrl = "/images/stories/" + fileName;
-                }
-            }
-
-            await _context.Stories.AddAsync(newStory);
-            await _context.SaveChangesAsync();
+            await _storiesService.CreateStoryAsync(newStory, storyVM.Image);
 
             return RedirectToAction("Index", "Home");
         }

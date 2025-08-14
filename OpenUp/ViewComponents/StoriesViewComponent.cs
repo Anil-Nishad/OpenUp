@@ -2,24 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using OpenUpData;
+using OpenUpData.Services;
 
 namespace CircleApp.ViewComponents
 {
     public class StoriesViewComponent : ViewComponent
     {
-        private readonly OpenUpContext _context;
-        public StoriesViewComponent(OpenUpContext context)
+        private readonly IStoriesService _storiesService;
+        public StoriesViewComponent(IStoriesService storiesService)
         {
-            _context = context;
+            _storiesService = storiesService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var allStories = await _context.Stories
-                .Where(n=> n.DateCreated >= DateTime.UtcNow.AddHours(-24)) // Get stories from the last 24 hours
-                .Include(s => s.User)
-                .OrderByDescending(s => s.DateCreated)
-                .ToListAsync();
+            var allStories = await _storiesService.GetAllStoriesAsync();
             return View(allStories);
         }
     }
