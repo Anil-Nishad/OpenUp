@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OpenUp.ViewModels.Stories;
 using OpenUpData;
+using OpenUpData.Helpers.Enums;
 using OpenUpData.Models;
 using OpenUpData.Services;
 using System;
@@ -11,9 +12,11 @@ namespace OpenUp.Controllers
     public class StoriesController : Controller
     {
         private readonly IStoriesService _storiesService;
-        public StoriesController(IStoriesService storiesService)
+        private readonly IFilesService _filesService;
+        public StoriesController(IStoriesService storiesService, IFilesService filesService)
         {
             _storiesService = storiesService;
+            _filesService = filesService;
         }
 
         //public async Task<IActionResult> Index()
@@ -26,15 +29,17 @@ namespace OpenUp.Controllers
         public async Task<IActionResult> CreateStory(StoryVM storyVM)
         {
             int loggedInUserId = 1;
+            var imageUploadPath = await _filesService.UploadImageAsync(storyVM.Image, ImageFileType.StoryImage);
 
             var newStory = new Story
             {
                 DateCreated = DateTime.UtcNow,
                 IsDeleted = false,
+                ImageUrl = imageUploadPath,
                 UserId = loggedInUserId
             };
 
-            await _storiesService.CreateStoryAsync(newStory, storyVM.Image);
+            await _storiesService.CreateStoryAsync(newStory);
 
             return RedirectToAction("Index", "Home");
         }

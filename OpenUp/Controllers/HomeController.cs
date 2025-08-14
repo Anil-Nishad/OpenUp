@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenUp.ViewModels.Home;
 using OpenUpData;
 using OpenUpData.Helpers;
+using OpenUpData.Helpers.Enums;
 using OpenUpData.Models;
 using OpenUpData.Services;
 using System.Diagnostics;
@@ -15,12 +16,17 @@ namespace OpenUp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IHashtagsService _hashtagsService;
         private readonly IPostsService _postsService;
+        private readonly IFilesService _filesService;
 
-        public HomeController(ILogger<HomeController> logger, IHashtagsService hashtagsService, IPostsService postsService)
+        public HomeController(ILogger<HomeController> logger, 
+                             IHashtagsService hashtagsService, 
+                             IPostsService postsService, 
+                             IFilesService filesService)
         {
             _logger = logger;
             _hashtagsService = hashtagsService;
             _postsService = postsService;
+            _filesService = filesService;
         }
 
         public async Task<IActionResult> Index()
@@ -35,6 +41,7 @@ namespace OpenUp.Controllers
         {
             //Get the logged in user
             int loggedInUser = 1;
+            var imageUploadPath = await _filesService.UploadImageAsync(post.Image, ImageFileType.PostImage);
 
             //Create a new Post
             var newPost = new Post
@@ -42,10 +49,11 @@ namespace OpenUp.Controllers
                 Content = post.Content,
                 DateCreated = DateTime.Now,
                 DateUpdated = DateTime.Now,
-                UserId = loggedInUser
+                UserId = loggedInUser,
+                ImageUrl = imageUploadPath
             };
 
-            await _postsService.CreatePostAsync(newPost, post.Image);
+            await _postsService.CreatePostAsync(newPost);
             await _hashtagsService.ProcessHashtagsForNewPostAsync(post.Content);
             return RedirectToAction("Index");
         }
