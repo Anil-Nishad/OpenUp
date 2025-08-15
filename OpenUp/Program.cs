@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenUpData;
 using OpenUpData.Helpers;
 using OpenUpData.Services;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,14 @@ builder.Services.AddScoped<IHashtagsService, HashtagsService>();
 builder.Services.AddScoped<IStoriesService, StoriesService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
+
+//Identity configuration
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<OpenUpContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -43,6 +53,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
