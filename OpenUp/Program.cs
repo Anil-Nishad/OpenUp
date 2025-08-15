@@ -24,6 +24,18 @@ builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
 //Identity configuration
+
+//builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+//{
+//    options.User.RequireUniqueEmail = true;
+//    //Password settings
+//    options.Password.RequireDigit = true;
+//    options.Password.RequiredLength = 8;
+//    options.Password.RequireLowercase = true;
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.Password.RequireUppercase = true;
+//})
+
 builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<OpenUpContext>()
     .AddDefaultTokenProviders();
