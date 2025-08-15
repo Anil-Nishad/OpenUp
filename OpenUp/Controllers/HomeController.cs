@@ -35,6 +35,11 @@ namespace OpenUp.Controllers
             var allPosts = await _postsService.GetAllPostsAsync(loggedInUserId);
             return View(allPosts);
         }
+        public async Task<IActionResult> Details(int postId)
+        {
+            var post = await _postsService.GetPostByIdAsync(postId);
+            return View(post);
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostVM post)
