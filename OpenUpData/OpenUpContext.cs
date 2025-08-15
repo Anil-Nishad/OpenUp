@@ -1,10 +1,11 @@
-﻿using CircleApp.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OpenUpData.Models;
 
 namespace OpenUpData
 {
-    public class OpenUpContext : DbContext
+    public class OpenUpContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public OpenUpContext(DbContextOptions<OpenUpContext> options) : base(options)
         {
@@ -90,6 +91,16 @@ namespace OpenUpData
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
+
+            //Customize the ASP.NET identity model table names
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<IdentityRole<int>>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUserRole<int>>().ToTable("UserRoles");
+            modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("UserClaims");
+            modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("UserLogins");
+            modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("RoleClaims");
+            modelBuilder.Entity<IdentityUserToken<int>>().ToTable("UserTokens");
+
         }
     }
 }

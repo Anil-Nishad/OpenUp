@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenUpData;
 using OpenUpData.Helpers;
+using OpenUpData.Models;
 using OpenUpData.Services;
 using System;
 
@@ -23,7 +24,7 @@ builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
 //Identity configuration
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<OpenUpContext>()
     .AddDefaultTokenProviders();
 

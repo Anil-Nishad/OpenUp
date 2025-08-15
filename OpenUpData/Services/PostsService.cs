@@ -1,5 +1,4 @@
-﻿using CircleApp.Data.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OpenUpData.Models;
 using System;

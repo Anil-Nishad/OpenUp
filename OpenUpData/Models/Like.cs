@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircleApp.Data.Models
+namespace OpenUpData.Models
 {
     public class Like
     {

@@ -1,4 +1,3 @@
-using CircleApp.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenUp.ViewModels.Home;
