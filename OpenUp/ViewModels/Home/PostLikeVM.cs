@@ -1,7 +1,6 @@
-﻿namespace OpenUp.ViewModels.Home
+﻿namespace OpenUp.ViewModels.Home;
+
+public class PostLikeVM
 {
-    public class PostLikeVM
-    {
-        public int PostId { get; set; }
-    }
+    public int PostId { get; set; }
 }

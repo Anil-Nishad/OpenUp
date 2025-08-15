@@ -1,8 +1,7 @@
-﻿namespace OpenUp.ViewModels.Home
+﻿namespace OpenUp.ViewModels.Home;
+
+public class PostVM
 {
-    public class PostVM
-    {
-        public string Content { get; set; }
-        public IFormFile Image { get; set; }
-    }
+    public string Content { get; set; }
+    public IFormFile Image { get; set; }
 }

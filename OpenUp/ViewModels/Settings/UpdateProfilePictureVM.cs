@@ -1,7 +1,6 @@
-﻿namespace OpenUp.ViewModels.Settings
+﻿namespace OpenUp.ViewModels.Settings;
+
+public class UpdateProfilePictureVM
 {
-    public class UpdateProfilePictureVM
-    {
-        public IFormFile ProfilePictureImage { get; set; }
-    }
+    public IFormFile ProfilePictureImage { get; set; }
 }

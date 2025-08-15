@@ -5,19 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenUpData.Models
+namespace OpenUpData.Models;
+
+public class Like
 {
-    public class Like
-    {
-        public int Id { get; set; }
-        public DateTime DateCreated { get; set; }
+    public int Id { get; set; }
+    public DateTime DateCreated { get; set; }
 
-        public int PostId { get; set; }
-        public int UserId { get; set; }
+    public int PostId { get; set; }
+    public int UserId { get; set; }
 
-        // Navigation properties
-        public Post Post { get; set; }
-        public User User { get; set; }
+    // Navigation properties
+    public Post Post { get; set; }
+    public User User { get; set; }
 
-    }
 }

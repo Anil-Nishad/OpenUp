@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenUpData.Helpers.Enums
+namespace OpenUpData.Helpers.Enums;
+
+public enum ImageFileType
 {
-    public enum ImageFileType
-    {
-        PostImage,
-        StoryImage,
-        ProfilePicture,
-        CoverImage
-    }
+    PostImage,
+    StoryImage,
+    ProfilePicture,
+    CoverImage
 }

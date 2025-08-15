@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenUpData.Services
+namespace OpenUpData.Services;
+
+public interface IFilesService
 {
-    public interface IFilesService
-    {
-        Task<string> UploadImageAsync(IFormFile file, ImageFileType imageFileType);
-    }
+    Task<string> UploadImageAsync(IFormFile file, ImageFileType imageFileType);
 }

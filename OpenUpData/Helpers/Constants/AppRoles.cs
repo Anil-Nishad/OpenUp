@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenUpData.Helpers.Constants
-{
-    public static class AppRoles
-    {
-        public const string Admin = "Admin";
-        public const string User = "User";
+namespace OpenUpData.Helpers.Constants;
 
-        public static readonly IReadOnlyList<string> All = new[] { Admin, User };
-    }
+public static class AppRoles
+{
+    public const string Admin = "Admin";
+    public const string User = "User";
+
+    public static readonly IReadOnlyList<string> All = new[] { Admin, User };
 }

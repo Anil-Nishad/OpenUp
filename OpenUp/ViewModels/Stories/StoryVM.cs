@@ -1,7 +1,6 @@
-﻿namespace OpenUp.ViewModels.Stories
+﻿namespace OpenUp.ViewModels.Stories;
+
+public class StoryVM
 {
-    public class StoryVM
-    {
-        public IFormFile Image { get; set; }
-    }
+    public IFormFile Image { get; set; }
 }

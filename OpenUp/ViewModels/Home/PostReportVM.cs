@@ -1,7 +1,6 @@
-﻿namespace OpenUp.ViewModels.Home
+﻿namespace OpenUp.ViewModels.Home;
+
+public class PostReportVM
 {
-    public class PostReportVM
-    {
-        public int PostId { get; set; }
-    }
+    public int PostId { get; set; }
 }

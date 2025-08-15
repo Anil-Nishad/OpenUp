@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenUpData.Models
+namespace OpenUpData.Models;
+
+public class Story
 {
-    public class Story
-    {
-        public int Id { get; set; }
-        public string? ImageUrl { get; set; }
-        public DateTime DateCreated { get; set; }
-        public bool IsDeleted { get; set; }
+    public int Id { get; set; }
+    public string? ImageUrl { get; set; }
+    public DateTime DateCreated { get; set; }
+    public bool IsDeleted { get; set; }
 
-        // Foreign key
-        public int UserId { get; set; }
+    // Foreign key
+    public int UserId { get; set; }
 
-        //Navigation properties
-        public User User { get; set; }
-    }
+    //Navigation properties
+    public User User { get; set; }
 }

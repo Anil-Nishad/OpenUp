@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OpenUp.ViewModels.Settings;
 using OpenUpData.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OpenUp.Controllers;
-
+[Authorize]
 public class SettingsController : Controller
 {
     private readonly IUsersService _usersService;

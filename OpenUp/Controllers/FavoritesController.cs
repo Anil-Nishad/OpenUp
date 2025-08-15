@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
-
+[Authorize]
 public class FavoritesController : Controller
 {
     private readonly IPostsService _postsService;

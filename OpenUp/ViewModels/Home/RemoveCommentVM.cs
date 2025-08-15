@@ -1,7 +1,6 @@
-﻿namespace OpenUp.ViewModels.Home
+﻿namespace OpenUp.ViewModels.Home;
+
+public class RemoveCommentVM
 {
-    public class RemoveCommentVM
-    {
-        public int CommentId { get; set; }
-    }
+    public int CommentId { get; set; }
 }

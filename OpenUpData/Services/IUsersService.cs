@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenUpData.Services
+namespace OpenUpData.Services;
+
+public interface IUsersService
 {
-    public interface IUsersService
-    {
-        Task<User> GetUser(int loggedInUserId);
-        Task UpdateUserProfilePicture(int loggedInUserId, string profilePictureUrl);
-    }
+    Task<User> GetUser(int loggedInUserId);
+    Task UpdateUserProfilePicture(int loggedInUserId, string profilePictureUrl);
 }

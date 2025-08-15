@@ -75,7 +75,14 @@ public class AuthenticationController : Controller
             ModelState.AddModelError("", error.Description);
         }
 
-        return View();
+            return View(registerVM);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
     }
 }
 

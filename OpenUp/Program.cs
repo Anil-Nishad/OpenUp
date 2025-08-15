@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenUpData;
@@ -40,12 +41,24 @@ builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<OpenUpContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Authentication/Login";
+    options.AccessDeniedPath = "/Authentication/AccessDenied";
+});
+
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    {
+//        options.LoginPath = "/Authentication/Login";
+//        options.AccessDeniedPath = "/Authentication/AccessDenied";
+//    });
+//builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Initialize the database with sample data
+//Seed the database with initial data
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<OpenUpContext>();
