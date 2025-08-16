@@ -11,7 +11,9 @@ namespace OpenUpData.Models;
 public class User : IdentityUser<int>
 {
     public string FullName { get; set; }
+    public string? Bio { get; set; }
     public string? ProfilePictureUrl { get; set; }
+    public bool IsDeleted { get; set; }
 
     // Navigation properties
     public ICollection<Post> Posts { get; set; } = new List<Post>();

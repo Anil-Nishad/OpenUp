@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenUp.ViewModels.Settings;
 using OpenUpData.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using OpenUpData.Models;
 
 namespace OpenUp.Controllers;
 [Authorize]
@@ -10,17 +12,23 @@ public class SettingsController : Controller
 {
     private readonly IUsersService _usersService;
     private readonly IFilesService _filesService;
-    public SettingsController(IUsersService usersService, IFilesService filesService)
+        private readonly UserManager<User> _userManager;
+        public SettingsController(IUsersService usersService, 
+            IFilesService filesService,
+            UserManager<User> userManager) 
     {
         _usersService = usersService;
         _filesService = filesService;
+            _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
     {
-        var loggedInUserId = 1;
-        var userDb = await _usersService.GetUser(loggedInUserId);
-        return View(userDb);
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDb = await _usersService.GetUser(int.Parse(loggedInUserId));
+
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            return View(loggedInUser);
     }
 
     [HttpPost]
@@ -31,12 +39,6 @@ public class SettingsController : Controller
 
         await _usersService.UpdateUserProfilePicture(loggedInUser, uploadedProfilePictureUrl);
 
-        return RedirectToAction("Index");
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> UpdateProfile(UpdateProfileVM profileVM)
-    {
         return RedirectToAction("Index");
     }
 }

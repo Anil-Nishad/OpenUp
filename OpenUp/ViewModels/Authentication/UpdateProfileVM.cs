@@ -1,4 +1,4 @@
-﻿namespace OpenUp.ViewModels.Settings;
+﻿namespace OpenUp.ViewModels.Authentication;
 
 public class UpdateProfileVM
 {
