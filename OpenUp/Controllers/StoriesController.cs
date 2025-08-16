@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using OpenUp.Controllers.Base;
 using OpenUp.ViewModels.Stories;
-using OpenUpData;
 using OpenUpData.Helpers.Enums;
 using OpenUpData.Models;
 using OpenUpData.Services;
-using System;
 
 namespace OpenUp.Controllers;
 [Authorize]
-public class StoriesController : Controller
+    public class StoriesController : BaseController
 {
     private readonly IStoriesService _storiesService;
     private readonly IFilesService _filesService;
@@ -29,7 +27,9 @@ public class StoriesController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateStory(StoryVM storyVM)
     {
-        int loggedInUserId = 1;
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
+
         var imageUploadPath = await _filesService.UploadImageAsync(storyVM.Image, ImageFileType.StoryImage);
 
         var newStory = new Story
@@ -37,7 +37,7 @@ public class StoriesController : Controller
             DateCreated = DateTime.UtcNow,
             IsDeleted = false,
             ImageUrl = imageUploadPath,
-            UserId = loggedInUserId
+            UserId = loggedInUserId.Value
         };
 
         await _storiesService.CreateStoryAsync(newStory);

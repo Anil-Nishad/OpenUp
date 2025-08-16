@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using OpenUp.ViewModels.Settings;
 using OpenUpData.Services;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using OpenUpData.Models;
+using OpenUp.Controllers.Base;
+using System.Security.Claims;
+
 
 namespace OpenUp.Controllers;
 [Authorize]
-public class SettingsController : Controller
+    public class SettingsController : BaseController
 {
     private readonly IUsersService _usersService;
     private readonly IFilesService _filesService;
@@ -24,9 +26,6 @@ public class SettingsController : Controller
 
     public async Task<IActionResult> Index()
     {
-            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userDb = await _usersService.GetUser(int.Parse(loggedInUserId));
-
             var loggedInUser = await _userManager.GetUserAsync(User);
             return View(loggedInUser);
     }
@@ -34,10 +33,12 @@ public class SettingsController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateProfilePicture(UpdateProfilePictureVM profilePictureVM)
     {
-        var loggedInUser = 1;
-        var uploadedProfilePictureUrl = await _filesService.UploadImageAsync(profilePictureVM.ProfilePictureImage, OpenUpData.Helpers.Enums.ImageFileType.ProfilePicture);
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
 
-        await _usersService.UpdateUserProfilePicture(loggedInUser, uploadedProfilePictureUrl);
+            var uploadedProfilePictureUrl = await _filesService.UploadImageAsync(profilePictureVM.ProfilePictureImage, OpenUpData.Helpers.Enums.ImageFileType.ProfilePicture);
+
+            await _usersService.UpdateUserProfilePicture(loggedInUserId.Value, uploadedProfilePictureUrl);
 
         return RedirectToAction("Index");
     }

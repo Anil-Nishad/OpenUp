@@ -1,17 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using OpenUp.Controllers.Base;
 using OpenUp.ViewModels.Home;
-using OpenUpData;
-using OpenUpData.Helpers;
 using OpenUpData.Helpers.Enums;
 using OpenUpData.Models;
 using OpenUpData.Services;
-using System.Diagnostics;
 
 namespace OpenUp.Controllers;
 [Authorize]
-public class HomeController : Controller
+    public class HomeController : BaseController
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IHashtagsService _hashtagsService;
@@ -31,8 +28,11 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        int loggedInUserId = 1;
-        var allPosts = await _postsService.GetAllPostsAsync(loggedInUserId);
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
+
+            var allPosts = await _postsService.GetAllPostsAsync(loggedInUserId.Value);
+
         return View(allPosts);
     }
     public async Task<IActionResult> Details(int postId)
@@ -44,18 +44,20 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> CreatePost(PostVM post)
     {
-        //Get the logged in user
-        int loggedInUser = 1;
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
+
         var imageUploadPath = await _filesService.UploadImageAsync(post.Image, ImageFileType.PostImage);
 
         //Create a new Post
         var newPost = new Post
         {
             Content = post.Content,
-            DateCreated = DateTime.Now,
-            DateUpdated = DateTime.Now,
-            UserId = loggedInUser,
-            ImageUrl = imageUploadPath
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
+                ImageUrl = imageUploadPath,
+                NrOfReports = 0,
+                UserId = loggedInUserId.Value
         };
 
         await _postsService.CreatePostAsync(newPost);
@@ -66,16 +68,21 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> TogglePostLike(PostLikeVM postLikeVM)
     {
-        int loggedInUserId = 1;
-        await _postsService.TogglePostLikeAsync(postLikeVM.PostId, loggedInUserId);
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
+
+            await _postsService.TogglePostLikeAsync(postLikeVM.PostId, loggedInUserId.Value);
+
         return RedirectToAction("Index");
     }
 
     [HttpPost]
     public async Task<IActionResult> TogglePostFavorite(PostFavoriteVM postFavoriteVM)
     {
-        int loggedInUserId = 1;
-        await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, loggedInUserId);
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
+            await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, loggedInUserId.Value);
+
         return RedirectToAction("Index");
     }
 
@@ -83,20 +90,23 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> TogglePostVisibility(PostVisibilityVM postVisibilityVM)
     {
-        int loggedInUserId = 1;
-        await _postsService.TogglePostVisibilityAsync(postVisibilityVM.PostId, loggedInUserId);
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
+            await _postsService.TogglePostVisibilityAsync(postVisibilityVM.PostId, loggedInUserId.Value);
+
         return RedirectToAction("Index");
     }
 
     [HttpPost]
     public async Task<IActionResult> AddPostComment(PostCommentVM postCommentVM)
     {
-        int loggedInUserId = 1;
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
 
         //Creat a post object
         var newComment = new Comment()
         {
-            UserId = loggedInUserId,
+            UserId = loggedInUserId.Value,
             PostId = postCommentVM.PostId,
             Content = postCommentVM.Content,
             DateCreated = DateTime.UtcNow,
@@ -109,8 +119,11 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> AddPostReport(PostReportVM postReportVM)
     {
-        int loggedInUserId = 1;
-        await _postsService.ReportPostAsync(postReportVM.PostId, loggedInUserId);
+            var loggedInUserId = GetUserId();
+            if (loggedInUserId == null) return RedirectToLogin();
+
+            await _postsService.ReportPostAsync(postReportVM.PostId, loggedInUserId.Value);
+
         return RedirectToAction("Index");
     }
 
