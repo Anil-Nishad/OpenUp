@@ -26,18 +26,18 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 
 //Identity configuration
 
-//builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
-//{
-//    options.User.RequireUniqueEmail = true;
-//    //Password settings
-//    options.Password.RequireDigit = true;
-//    options.Password.RequiredLength = 8;
-//    options.Password.RequireLowercase = true;
-//    options.Password.RequireNonAlphanumeric = false;
-//    options.Password.RequireUppercase = true;
-//})
+builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+    //Password settings
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 4;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+})
 
-builder.Services.AddIdentity<User, IdentityRole<int>>()
+//builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<OpenUpContext>()
     .AddDefaultTokenProviders();
 

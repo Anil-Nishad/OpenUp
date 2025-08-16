@@ -39,10 +39,4 @@ public class SettingsController : Controller
     {
         return RedirectToAction("Index");
     }
-
-    [HttpPost]
-    public async Task<IActionResult> UpdatePassword(UpdatePasswordVM updatePasswordVM)
-    {
-        return RedirectToAction("Index");
-    }
 }
