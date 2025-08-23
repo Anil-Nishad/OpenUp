@@ -54,6 +54,19 @@ builder.Services.ConfigureApplicationCookie(options =>
 //        options.AccessDeniedPath = "/Authentication/AccessDenied";
 //    });
 //builder.Services.AddAuthentication();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Auth:Google:ClientId"] ?? "";
+        options.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"] ?? "";
+        options.CallbackPath = "/signin-google";
+    })
+    .AddGitHub(options =>
+    {
+        options.ClientId = builder.Configuration["Auth:GitHub:ClientId"] ?? "";
+        options.ClientSecret = builder.Configuration["Auth:GitHub:ClientSecret"] ?? "";
+        options.CallbackPath = "/signin-github";
+    });
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
