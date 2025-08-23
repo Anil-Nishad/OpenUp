@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OpenUpData;
 
@@ -11,9 +12,11 @@ using OpenUpData;
 namespace OpenUp.Migrations
 {
     [DbContext(typeof(OpenUpContext))]
-    partial class OpenUpContextModelSnapshot : ModelSnapshot
+    [Migration("20250823183048_Added-Friend-Request-and-Friendship-Entity")]
+    partial class AddedFriendRequestandFriendshipEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
