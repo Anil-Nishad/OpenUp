@@ -15,7 +15,7 @@ namespace OpenUp.ViewComponents
         {
             var OneWeekAgo = DateTime.UtcNow.AddDays(-7);
             var hashtags = await _context.Hashtags
-                .Where(h => h.DateCreated >= OneWeekAgo) 
+                .Where(h => h.DateCreated >= OneWeekAgo || h.DateUpdated >= OneWeekAgo) 
                 .OrderByDescending(h => h.Count)
                 .Take(10)
                 .ToListAsync();
