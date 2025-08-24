@@ -22,7 +22,8 @@ public class FriendsController : BaseController
 
         var friendsData = new FriendshipVM()
         {
-            FriendRequestSent = await _friendsService.GetSentFriendRequestAsync(userId.Value)
+            FriendRequestsSent = await _friendsService.GetSentFriendRequestAsync(userId.Value),
+            FriendRequestsReceived = await _friendsService.GetReceivedFriendRequestAsync(userId.Value)
         };
 
         return View(friendsData);

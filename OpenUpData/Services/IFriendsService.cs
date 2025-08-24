@@ -15,4 +15,5 @@ public interface IFriendsService
     Task RemoveFriendAsync(int frienshipId);
     Task<List<UserWithFriendsCountDto>> GetSuggestedFriendsAsync(int userId);
     Task<List<FriendRequest>> GetSentFriendRequestAsync(int userId);
+    Task<List<FriendRequest>> GetReceivedFriendRequestAsync(int userId);
 }

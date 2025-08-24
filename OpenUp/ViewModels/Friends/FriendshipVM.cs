@@ -4,5 +4,6 @@ namespace OpenUp.ViewModels.Friends;
 
 public class FriendshipVM
 {
-    public List<FriendRequest> FriendRequestSent = new List<FriendRequest>();
+    public List<FriendRequest> FriendRequestsSent = new List<FriendRequest>();
+    public List<FriendRequest> FriendRequestsReceived = new List<FriendRequest>();
 }
