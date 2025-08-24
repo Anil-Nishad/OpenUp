@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
 using OpenUp.ViewModels.Friends;
+using OpenUpData.Helpers.Constants;
 using OpenUpData.Models;
 using OpenUpData.Services;
 
@@ -37,5 +38,12 @@ public class FriendsController : BaseController
 
         await _friendsService.SendRequestAsync(userId.Value, receiverId);
         return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CancelFriendRequest(int requestId)
+    {
+        await _friendsService.UpdateRequestAsync(requestId, FriendshipStatus.Canceled);
+        return RedirectToAction("Index");
     }
 }

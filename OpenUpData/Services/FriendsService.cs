@@ -107,6 +107,7 @@ public class FriendsService : IFriendsService
 
         return friendRequestsSent;
     }
+
     public async Task<List<FriendRequest>> GetReceivedFriendRequestAsync(int userId)
     {
         var friendRequestsReceived = await _context.FriendRequests
