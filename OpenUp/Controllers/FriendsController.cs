@@ -17,4 +17,14 @@ public class FriendsController : BaseController
     {
         return View();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> SendFriendRequest(int receiverId)
+    {
+        var userId = GetUserId();
+        if (!userId.HasValue) RedirectToLogin();
+
+        await _friendsService.SendRequestAsync(userId.Value, receiverId);
+        return RedirectToAction("Index", "Home");
+    }
 }
