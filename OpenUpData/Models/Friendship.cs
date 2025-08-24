@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenUpData.Models
+namespace OpenUpData.Models;
+
+public class Friendship
 {
-    public class Friendship
-    {
-        public int Id { get; set; }
-        public DateTime DateCreated { get; set; }
+    public int Id { get; set; }
+    public DateTime DateCreated { get; set; }
 
-        public int SenderId { get; set; }
-        public virtual User Sender { get; set; }
+    public int SenderId { get; set; }
+    public virtual User Sender { get; set; }
 
-        public int ReceiverId { get; set; }
-        public virtual User Receiver { get; set; }
-    }
+    public int ReceiverId { get; set; }
+    public virtual User Receiver { get; set; }
 }
