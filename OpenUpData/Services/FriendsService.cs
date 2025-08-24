@@ -118,4 +118,15 @@ public class FriendsService : IFriendsService
 
         return friendRequestsReceived;
     }
+
+    public async Task<List<Friendship>> GetFriendsAsync(int userId)
+    {
+        var friends = await _context.Friendships
+            .Include(n => n.Sender)
+            .Include(n => n.Receiver)
+            .Where(n => n.SenderId == userId || n.ReceiverId == userId)
+            .ToListAsync();
+
+        return friends;
+    }
 }

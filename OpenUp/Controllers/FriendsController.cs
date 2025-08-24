@@ -23,6 +23,7 @@ public class FriendsController : BaseController
 
         var friendsData = new FriendshipVM()
         {
+            Friends = await _friendsService.GetFriendsAsync(userId.Value),
             FriendRequestsSent = await _friendsService.GetSentFriendRequestAsync(userId.Value),
             FriendRequestsReceived = await _friendsService.GetReceivedFriendRequestAsync(userId.Value)
         };
@@ -44,6 +45,13 @@ public class FriendsController : BaseController
     public async Task<IActionResult> CancelFriendRequest(int requestId)
     {
         await _friendsService.UpdateRequestAsync(requestId, FriendshipStatus.Canceled);
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AcceptFriendRequest(int requestId)
+    {
+        await _friendsService.UpdateRequestAsync(requestId, FriendshipStatus.Accepted);
         return RedirectToAction("Index");
     }
 }
