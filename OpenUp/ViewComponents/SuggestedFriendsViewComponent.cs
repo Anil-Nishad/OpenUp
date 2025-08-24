@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OpenUp.ViewModels.Friends;
 using OpenUpData.Services;
 using System.Security.Claims;
 
@@ -18,7 +19,14 @@ public class SuggestedFriendsViewComponent : ViewComponent
         var userId = int.Parse(loggedInUserId);
 
         var suggestedFriends = await _friendsService.GetSuggestedFriendsAsync(userId);
-        return View(suggestedFriends);
+        var suggestedFriendsVM = suggestedFriends.Select(n => new UserWithFriendsCountVM()
+        {
+            UserId = n.User.Id,
+            FullName = n.User.FullName,
+            ProfilePictureUrl = n.User.ProfilePictureUrl,
+            FriendsCount = n.FriendsCount
+        }).ToList();
+        return View(suggestedFriendsVM);
     }
 }
 

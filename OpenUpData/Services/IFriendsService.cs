@@ -1,4 +1,5 @@
-﻿using OpenUpData.Models;
+﻿using OpenUpData.Dtos;
+using OpenUpData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,5 @@ public interface IFriendsService
     Task SendRequestAsync(int senderId, int receiverId);
     Task<FriendRequest> UpdateRequestAsync(int requestId, string status);
     Task RemoveFriendAsync(int frienshipId);
-    Task<List<User>> GetSuggestedFriendsAsync(int userId);
+    Task<List<UserWithFriendsCountDto>> GetSuggestedFriendsAsync(int userId);
 }

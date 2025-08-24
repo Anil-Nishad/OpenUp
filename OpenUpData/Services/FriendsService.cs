@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OpenUpData.Dtos;
 using OpenUpData.Helpers.Constants;
 using OpenUpData.Models;
 using System;
@@ -66,7 +67,7 @@ public class FriendsService : IFriendsService
         }
     }
 
-    public async Task<List<User>> GetSuggestedFriendsAsync(int userId)
+    public async Task<List<UserWithFriendsCountDto>> GetSuggestedFriendsAsync(int userId)
     {
         var existingFriendIds = await _context.Friendships
             .Where(n => n.SenderId == userId || n.ReceiverId == userId)
@@ -84,6 +85,12 @@ public class FriendsService : IFriendsService
             .Where(n => n.Id != userId &&
             !existingFriendIds.Contains(n.Id) &&
             !pendingRequestIds.Contains(n.Id))
+            .Select(u => new UserWithFriendsCountDto()
+            {
+                User = u,
+                FriendsCount = _context.Friendships
+                    .Count(f => f.SenderId == u.Id || f.ReceiverId == u.Id)
+            })
             .Take(5)
             .ToListAsync();
 
