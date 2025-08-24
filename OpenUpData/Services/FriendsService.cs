@@ -64,6 +64,18 @@ public class FriendsService : IFriendsService
         {
             _context.Friendships.Remove(friendship);
             await _context.SaveChangesAsync();
+
+            //find requests
+            var requests = await _context.FriendRequests
+                .Where(r => (r.SenderId == friendship.SenderId && r.ReceiverId == friendship.ReceiverId) ||
+                (r.SenderId == friendship.ReceiverId && r.ReceiverId == friendship.SenderId))
+                .ToListAsync();
+
+            if (requests.Any())
+            {
+                _context.FriendRequests.RemoveRange(requests);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 
