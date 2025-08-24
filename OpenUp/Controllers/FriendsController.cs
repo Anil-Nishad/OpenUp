@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
+using OpenUp.ViewModels.Friends;
+using OpenUpData.Models;
 using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
@@ -13,9 +15,17 @@ public class FriendsController : BaseController
         _friendsService = friendsService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var userId = GetUserId();
+        if (!userId.HasValue) RedirectToLogin();
+
+        var friendsData = new FriendshipVM()
+        {
+            FriendRequestSent = await _friendsService.GetSentFriendRequestAsync(userId.Value)
+        };
+
+        return View(friendsData);
     }
 
     [HttpPost]
