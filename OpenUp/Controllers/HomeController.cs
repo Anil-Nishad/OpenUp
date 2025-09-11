@@ -66,14 +66,17 @@ namespace OpenUp.Controllers;
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> TogglePostLike(PostLikeVM postLikeVM)
     {
-            var loggedInUserId = GetUserId();
-            if (loggedInUserId == null) return RedirectToLogin();
+        var loggedInUserId = GetUserId();
+        if (loggedInUserId == null) return RedirectToLogin();
 
-            await _postsService.TogglePostLikeAsync(postLikeVM.PostId, loggedInUserId.Value);
+        await _postsService.TogglePostLikeAsync(postLikeVM.PostId, loggedInUserId.Value);
 
-        return RedirectToAction("Index");
+        //return RedirectToAction("Index");
+        var post = await _postsService.GetPostByIdAsync(postLikeVM.PostId);
+            return PartialView("Home/_Post", post);
     }
 
     [HttpPost]
