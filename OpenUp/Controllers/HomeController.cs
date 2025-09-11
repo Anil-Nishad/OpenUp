@@ -82,11 +82,13 @@ namespace OpenUp.Controllers;
     [HttpPost]
     public async Task<IActionResult> TogglePostFavorite(PostFavoriteVM postFavoriteVM)
     {
-            var loggedInUserId = GetUserId();
-            if (loggedInUserId == null) return RedirectToLogin();
-            await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, loggedInUserId.Value);
+        var loggedInUserId = GetUserId();
+        if (loggedInUserId == null) return RedirectToLogin();
+        await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, loggedInUserId.Value);
 
-        return RedirectToAction("Index");
+        //return RedirectToAction("Index");
+        var post = await _postsService.GetPostByIdAsync(postFavoriteVM.PostId);
+        return PartialView("Home/_Post", post);
     }
 
 
