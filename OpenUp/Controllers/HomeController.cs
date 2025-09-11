@@ -103,6 +103,7 @@ namespace OpenUp.Controllers;
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPostComment(PostCommentVM postCommentVM)
     {
             var loggedInUserId = GetUserId();
@@ -118,7 +119,9 @@ namespace OpenUp.Controllers;
             DateUpdated = DateTime.UtcNow
         };
         await _postsService.AddPostCommentAsync(newComment);
-        return RedirectToAction("Index");
+        //return RedirectToAction("Index");
+        var post = await _postsService.GetPostByIdAsync(postCommentVM.PostId);
+        return PartialView("Home/_Post", post);
     }
 
     [HttpPost]
