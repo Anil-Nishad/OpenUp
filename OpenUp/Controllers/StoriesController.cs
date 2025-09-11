@@ -8,7 +8,7 @@ using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
 [Authorize]
-    public class StoriesController : BaseController
+public class StoriesController : BaseController
 {
     private readonly IStoriesService _storiesService;
     private readonly IFilesService _filesService;

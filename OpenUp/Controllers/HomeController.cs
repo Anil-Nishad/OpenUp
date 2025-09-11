@@ -8,7 +8,7 @@ using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
 [Authorize]
-    public class HomeController : BaseController
+public class HomeController : BaseController
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IHashtagsService _hashtagsService;

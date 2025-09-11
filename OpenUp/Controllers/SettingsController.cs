@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace OpenUp.Controllers;
 [Authorize]
-    public class SettingsController : BaseController
+public class SettingsController : BaseController
 {
     private readonly IUsersService _usersService;
     private readonly IFilesService _filesService;
