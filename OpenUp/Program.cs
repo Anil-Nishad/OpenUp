@@ -19,6 +19,7 @@ builder.Services.AddDbContext<OpenUpContext>(options =>
     options.UseSqlServer(dbConnectionString));
 
 //Services configuration
+builder.Services.AddScoped<INotificationsService, NotificationsService>();
 builder.Services.AddScoped<IPostsService, PostsService>();
 builder.Services.AddScoped<IHashtagsService, HashtagsService>();
 builder.Services.AddScoped<IStoriesService, StoriesService>();

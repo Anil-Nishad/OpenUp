@@ -12,10 +12,12 @@ namespace OpenUpData.Services;
 public class PostsService : IPostsService
 {
     private readonly OpenUpContext _context;
+    private readonly INotificationsService _notificationService;
 
-    public PostsService(OpenUpContext context)
+    public PostsService(OpenUpContext context, INotificationsService notificationService)
     {
         _context = context;
+        _notificationService = notificationService;
     }
 
     public async Task<List<Post>> GetAllPostsAsync(int loggedInUserId)
@@ -150,6 +152,8 @@ public class PostsService : IPostsService
             };
             await _context.Likes.AddAsync(newLike);
             await _context.SaveChangesAsync();
+            //add notification to db
+            await _notificationService.AddNewNotificationAsync(userId, "Someone liked your post", "Like");
         }
     }
 
