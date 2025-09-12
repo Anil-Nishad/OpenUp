@@ -15,6 +15,7 @@ public class NotificationsController : BaseController
     {
         return View();
     }
+
     [HttpGet]
     public async Task<IActionResult> GetUnreadCount()
     {
@@ -23,5 +24,14 @@ public class NotificationsController : BaseController
         //RedirectToLogin();
         var unreadCount = await _notificationService.GetUnreadNotificationsCountAsync(userId.Value);
         return Json(new { success = true,count = unreadCount });
+    }
+
+    public async Task<IActionResult> GetNotifications()
+    {
+        var userId = GetUserId();
+        if (!userId.HasValue) RedirectToLogin();
+
+        var notifications = await _notificationService.GetUserNotificationsAsync(userId.Value);
+        return PartialView("Notifications/_Notifications", notifications);
     }
 }

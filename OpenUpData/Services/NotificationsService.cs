@@ -48,6 +48,18 @@ public class NotificationsService : INotificationsService
         return await _context.Notifications.CountAsync(n => n.UserId == userId && !n.IsRead);
     }
 
+    public async Task<List<Notification>> GetUserNotificationsAsync(int userId)
+    {
+        {
+            var allNotifications = await _context.Notifications.Where(n => n.UserId == userId)
+                .OrderBy(n => n.IsRead)
+                .ThenByDescending(n => n.DateCreated)
+                .ToListAsync();
+
+            return allNotifications;
+        }
+    }
+
     private string GetPostMessage(string notificationType, string userFullName)
     {
         return notificationType switch
