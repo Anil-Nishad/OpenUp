@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
 using OpenUp.ViewModels.Home;
+using OpenUpData.Helpers.Constants;
 using OpenUpData.Helpers.Enums;
 using OpenUpData.Models;
 using OpenUpData.Services;
@@ -65,6 +66,8 @@ public class HomeController : BaseController
 
         await _postsService.CreatePostAsync(newPost);
         await _hashtagsService.ProcessHashtagsForNewPostAsync(post.Content);
+
+        //Redirect to the index page
         return RedirectToAction("Index");
     }
 
@@ -73,15 +76,18 @@ public class HomeController : BaseController
     public async Task<IActionResult> TogglePostLike(PostLikeVM postLikeVM)
     {
         var userId = GetUserId();
+        var userName = GetUserFullName();
         if (userId == null) return RedirectToLogin();
 
         var result = await _postsService.TogglePostLikeAsync(postLikeVM.PostId, userId.Value);
 
-        if (result.SendNotification)
-            await _notificationsService.AddNewNotificationAsync(userId.Value, "Liked", "Like");
+        
 
         //return RedirectToAction("Index");
         var post = await _postsService.GetPostByIdAsync(postLikeVM.PostId);
+
+        if (result.SendNotification)
+            await _notificationsService.AddNewNotificationAsync(post.UserId, NotificationType.Like, userName, postLikeVM.PostId);
 
         //send notification to user using signalR
         //var notificationNumber = await _notificationsService.GetUnreadNotificationsCountAsync(userId.Value);
@@ -95,11 +101,17 @@ public class HomeController : BaseController
     public async Task<IActionResult> TogglePostFavorite(PostFavoriteVM postFavoriteVM)
     {
         var loggedInUserId = GetUserId();
+            var userName = GetUserFullName();
         if (loggedInUserId == null) return RedirectToLogin();
-        await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, loggedInUserId.Value);
+            var result = await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, loggedInUserId.Value);
 
         //return RedirectToAction("Index");
         var post = await _postsService.GetPostByIdAsync(postFavoriteVM.PostId);
+
+            if (result.SendNotification)
+                await _notificationsService.AddNewNotificationAsync(post.UserId, NotificationType.Favorite, userName, postFavoriteVM.PostId);
+
+
         return PartialView("Home/_Post", post);
     }
 
@@ -119,6 +131,8 @@ public class HomeController : BaseController
     public async Task<IActionResult> AddPostComment(PostCommentVM postCommentVM)
     {
             var loggedInUserId = GetUserId();
+            var userName = GetUserFullName();
+
             if (loggedInUserId == null) return RedirectToLogin();
 
         //Creat a post object
@@ -133,6 +147,9 @@ public class HomeController : BaseController
         await _postsService.AddPostCommentAsync(newComment);
         //return RedirectToAction("Index");
         var post = await _postsService.GetPostByIdAsync(postCommentVM.PostId);
+
+            await _notificationsService.AddNewNotificationAsync(post.UserId, NotificationType.Comment, userName, postCommentVM.PostId);
+
         return PartialView("Home/_Post", post);
     }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using OpenUpData.Helpers.Constants;
 using OpenUpData.Hubs;
 using OpenUpData.Models;
 using System;
@@ -20,14 +21,15 @@ public class NotificationsService : INotificationsService
         _hubContext = hubContext;
     }
 
-    public async Task AddNewNotificationAsync(int userId, string message, string notificationType)
+    public async Task AddNewNotificationAsync(int userId, string notificationType, string userFullName, int? postId)
     {
         var newNotification = new Notification()
         {
             UserId = userId,
-            Message = message,
+            Message = GetPostMessage(notificationType, userFullName),
             Type = notificationType,
             IsRead = false,
+            PostId = postId,
             DateCreated = DateTime.UtcNow,
             DateUpdated = DateTime.UtcNow
         };
@@ -44,5 +46,18 @@ public class NotificationsService : INotificationsService
     public async Task<int> GetUnreadNotificationsCountAsync(int userId)
     {
         return await _context.Notifications.CountAsync(n => n.UserId == userId && !n.IsRead);
+    }
+
+    private string GetPostMessage(string notificationType, string userFullName)
+    {
+        return notificationType switch
+        {
+            NotificationType.Like => $"{userFullName} liked your post.",
+            NotificationType.Comment => $"{userFullName} commented on your post.",
+            NotificationType.Favorite => $"{userFullName} favorited your post.",
+            NotificationType.FriendRequest => $"{userFullName} sent you a friend request.",
+            NotificationType.FriendRequestApproved => $"{userFullName} accepted your friend request.",
+            _ => "You have a new notification."
+        };
     }
 }

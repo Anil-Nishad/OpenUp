@@ -12,6 +12,16 @@ public abstract class BaseController : Controller
             return null;
         return int.Parse(loggedInUserId);
     }
+    protected string? GetUserFullName()
+    {
+        var loggedInUserFullName = User.FindFirstValue(ClaimTypes.Name);
+        var GivenName = User.FindFirstValue(ClaimTypes.GivenName);
+        var Surname = User.FindFirstValue(ClaimTypes.Surname);
+        string Name = GivenName + " " + Surname;
+        if (string.IsNullOrEmpty(loggedInUserFullName))
+            return Name;
+        return loggedInUserFullName;
+    }
 
     protected IActionResult RedirectToLogin()
     {
