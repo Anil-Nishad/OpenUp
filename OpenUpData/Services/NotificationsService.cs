@@ -1,4 +1,5 @@
-﻿using OpenUpData.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OpenUpData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,5 +30,10 @@ public class NotificationsService : INotificationsService
 
         await _context.Notifications.AddAsync(newNotification);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<int> GetUnreadNotificationsCountAsync(int userId)
+    {
+        return await _context.Notifications.CountAsync(n => n.UserId == userId && !n.IsRead);
     }
 }
