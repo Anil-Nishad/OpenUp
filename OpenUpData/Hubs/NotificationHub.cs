@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace OpenUp.Hubs;
+namespace OpenUpData.Hubs;
 
 public class NotificationHub : Hub
 {

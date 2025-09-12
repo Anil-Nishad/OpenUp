@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using OpenUpData.Dtos;
 using OpenUpData.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ public interface IPostsService
     Task<Post> RemovePostAsync(int postId);
     Task AddPostCommentAsync(Comment comment);
     Task RemovePostCommentAsync(int commentId);
-    Task TogglePostLikeAsync(int postId, int userId);
+    Task<GetNotificationDto> TogglePostLikeAsync(int postId, int userId);
     Task TogglePostFavoriteAsync(int postId, int userId);
     Task ReportPostAsync(int postId, int userId);
     Task TogglePostVisibilityAsync(int postId, int userId);

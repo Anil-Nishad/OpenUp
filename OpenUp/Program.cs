@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OpenUp.Hubs;
+using OpenUpData.Hubs;
 using OpenUpData;
 using OpenUpData.Helpers;
 using OpenUpData.Models;
