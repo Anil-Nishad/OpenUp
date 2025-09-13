@@ -29,17 +29,13 @@
                     <button type="submit" id="saveButton" class="hidden button bg-blue-500 text-white px-4 py-1 rounded ml-auto">Save</button>
 
                 </form>
-                </div>
+            </div>
 
             <div class="relative border-b">
                 <nav class="nav__underline px-6 p-0 border-transparent -mb-px">
                     <ul class="uk-slider-items w-[calc(100%+10px)] !overflow-hidden" 
                         uk-switcher="connect: #setting_tab; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">
-                        <li class="w-auto pr-2.5">
-                            <a href="#">
-                                Update profile
-                            </a>
-                        </li>
+                        <li class="w-auto pr-2.5"><a href="#">Update profile</a></li>
                         <li class="w-auto pr-2.5"><a href="#">Update password</a></li>
                     </ul>
                 </nav>
@@ -73,9 +69,10 @@
                                     <textarea class="w-full" name="bio" rows="5" placeholder="Enter your bio">@Model.Bio</textarea>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4 mt-16 pl-[10.5rem]">
-                                <button type="button" class="button px-6 bg-secondary" onclick="window.history.back()">Cancel</button>
-                                <button type="submit" class="button px-10 bg-primary text-white">Save</button>
+                            <div class="flex items-center gap-4 mt-16 justify-end ml-32">
+                                <button type="button" class="button px-6 bg-secondary" onclick="handleCancel()">Cancel</button>
+                                <button type="reset" class="button px-6 bg-yellow-500 text-white">Reset</button>
+                                <button type="submit" class="button px-6 bg-primary text-white">Save</button>
                             </div>
                         </div>
                     </form>
@@ -113,9 +110,9 @@
                                     <input type="password" name="confirmPassword" placeholder="Confirm your new password" value="" class="w-full" />
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4 mt-16 pl-[10.5rem]">
-                                <button type="button" class="button px-6 bg-secondary" onclick="window.history.back()">Cancel</button>
-                                <button type="submit" class="button px-10 bg-primary text-white">Save</button>
+                            <div class="flex items-center gap-4 mt-16 justify-end ml-32">
+                                <button type="button" class="button px-6 bg-secondary" onclick="handleCancel()">Cancel</button>
+                                <button type="submit" class="button px-6 bg-primary text-white">Save</button>
                             </div>
                         </div>
                     </form>
@@ -155,5 +152,22 @@
             switcher.show(0);
         }
     });
+
+    function handleCancel() {
+    // Get the URL of the previous page (the page that brought user here)
+    const referrer = document.referrer;
+
+        // Check three conditions:
+        // 1. referrer exists (user came from another page)
+        // 2. referrer is from the same website (includes current host)
+        // 3. referrer URL does NOT contain 'Settings'
+        if (referrer && referrer.includes(window.location.host) && !referrer.includes('Settings')) {
+            // If all conditions are true, navigate back to the previous page
+            window.location.href = referrer;
+        } else {
+            // If any condition is false, go to the Home page
+            window.location.href = '@Url.Action("Index", "Home")';
+        }
+    }
 
 </script>
