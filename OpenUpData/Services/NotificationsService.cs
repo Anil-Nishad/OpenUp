@@ -29,7 +29,7 @@ public class NotificationsService : INotificationsService
             Message = GetPostMessage(notificationType, userFullName),
             Type = notificationType,
             IsRead = false,
-            PostId = postId,
+            PostId = postId.HasValue ? postId.Value : null,
             DateCreated = DateTime.UtcNow,
             DateUpdated = DateTime.UtcNow
         };
