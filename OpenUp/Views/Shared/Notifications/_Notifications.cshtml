@@ -12,7 +12,7 @@
         _ => "Just now"
     };
 
-    <div class="relative flex items-center gap-3 p-2 duration-200 rounded-xl pr-10 hover:bg-secondery">
+    <div class="relative flex items-center gap-3 p-2 duration-200 rounded-xl pr-10 hover:bg-secondery @(notification.IsRead ? "" : "bg-teal-500/5")">
         <div class="flex-1">
             <p>
                 <b class="font-bold mr1">
@@ -21,5 +21,10 @@
             </p>
             <div class="text-xs text-gray-500 mt-1.5">@displayTxt</div>
         </div>
+
+        @if (notification.IsRead == false)
+        {
+            <div class="w-2.5 h-2.5 bg-teal-600 rounded-full absolute right-3 top-5" onclick="markNotificationAsRead(@notification.Id)"></div>
+        }
     </div>
 }

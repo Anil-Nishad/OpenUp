@@ -117,8 +117,7 @@
                 console.error("Error fetching notification count: ", error);
             })
 
-        document.getElementById('notificationsBtn')
-        .addEventListener('click', () => {
+        document.getElementById('notificationsBtn').addEventListener('click', () => {
             fetch('Notifications/GetNotifications')
             .then(resp => resp.text())
             .then(html => {
@@ -142,4 +141,19 @@
             .catch((err) => console.log("SignalR connection error: ", err))
 
     })
+
+    function markNotificationAsRead(notificationId) {
+        console.log('Mark as read => notification => ', notificationId);
+
+        fetch(`Notifications/MarkNotificationAsRead?notificationId=${notificationId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(resp => resp.text())
+            .then(html => {
+                document.getElementById('notification-dropdown').innerHTML = html;
+            })
+    }
 </script>

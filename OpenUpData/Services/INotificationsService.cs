@@ -13,6 +13,6 @@ public interface INotificationsService
     Task<int> GetUnreadNotificationsCountAsync(int userId);
 
     //Task SendNotificationAsync(Notification notification);
-    //Task MarkNotificationAsReadAsync(int notificationId);
+    Task MarkNotificationAsReadAsync(int notificationId);
     Task<List<Notification>> GetUserNotificationsAsync(int userId);
 }

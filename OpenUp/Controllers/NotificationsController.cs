@@ -34,4 +34,16 @@ public class NotificationsController : BaseController
         var notifications = await _notificationService.GetUserNotificationsAsync(userId.Value);
         return PartialView("Notifications/_Notifications", notifications);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> MarkNotificationAsRead(int notificationId)
+    {
+        var userId = GetUserId();
+        if (!userId.HasValue) RedirectToLogin();
+
+        await _notificationService.MarkNotificationAsReadAsync(notificationId);
+
+        var notifications = await _notificationService.GetUserNotificationsAsync(userId.Value);
+        return PartialView("Notifications/_Notifications", notifications);
+    }
 }
