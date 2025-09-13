@@ -86,7 +86,7 @@ public class HomeController : BaseController
         //return RedirectToAction("Index");
         var post = await _postsService.GetPostByIdAsync(postLikeVM.PostId);
 
-        if (result.SendNotification)
+            if (result.SendNotification && userId != post.UserId)
             await _notificationsService.AddNewNotificationAsync(post.UserId, NotificationType.Like, userName, postLikeVM.PostId);
 
         //send notification to user using signalR
@@ -100,15 +100,15 @@ public class HomeController : BaseController
     [HttpPost]
     public async Task<IActionResult> TogglePostFavorite(PostFavoriteVM postFavoriteVM)
     {
-        var loggedInUserId = GetUserId();
+            var userId = GetUserId();
             var userName = GetUserFullName();
-        if (loggedInUserId == null) return RedirectToLogin();
-            var result = await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, loggedInUserId.Value);
+            if (userId == null) return RedirectToLogin();
+            var result = await _postsService.TogglePostFavoriteAsync(postFavoriteVM.PostId, userId.Value);
 
         //return RedirectToAction("Index");
         var post = await _postsService.GetPostByIdAsync(postFavoriteVM.PostId);
 
-            if (result.SendNotification)
+            if (result.SendNotification && userId != post.UserId)
                 await _notificationsService.AddNewNotificationAsync(post.UserId, NotificationType.Favorite, userName, postFavoriteVM.PostId);
 
 
@@ -130,24 +130,26 @@ public class HomeController : BaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddPostComment(PostCommentVM postCommentVM)
     {
-            var loggedInUserId = GetUserId();
+            var userId = GetUserId();
             var userName = GetUserFullName();
 
-            if (loggedInUserId == null) return RedirectToLogin();
+            if (userId == null) return RedirectToLogin();
 
         //Creat a post object
         var newComment = new Comment()
         {
-            UserId = loggedInUserId.Value,
+            UserId = userId.Value,
             PostId = postCommentVM.PostId,
             Content = postCommentVM.Content,
             DateCreated = DateTime.UtcNow,
             DateUpdated = DateTime.UtcNow
         };
+
         await _postsService.AddPostCommentAsync(newComment);
         //return RedirectToAction("Index");
         var post = await _postsService.GetPostByIdAsync(postCommentVM.PostId);
 
+            if (userId != post.UserId)
             await _notificationsService.AddNewNotificationAsync(post.UserId, NotificationType.Comment, userName, postCommentVM.PostId);
 
         return PartialView("Home/_Post", post);
@@ -156,10 +158,10 @@ public class HomeController : BaseController
     [HttpPost]
     public async Task<IActionResult> AddPostReport(PostReportVM postReportVM)
     {
-            var loggedInUserId = GetUserId();
-            if (loggedInUserId == null) return RedirectToLogin();
+            var userId = GetUserId();
+            if (userId == null) return RedirectToLogin();
 
-            await _postsService.ReportPostAsync(postReportVM.PostId, loggedInUserId.Value);
+            await _postsService.ReportPostAsync(postReportVM.PostId, userId.Value);
 
         return RedirectToAction("Index");
     }

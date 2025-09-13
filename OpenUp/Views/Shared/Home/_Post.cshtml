@@ -1,6 +1,11 @@
 ﻿@using System.Security.Claims;
 @model Post
-
+@* For Debug Null Error *@
+@if (Model == null)
+{
+    <div class="text-danger">Error: Post model is null.</div>
+    return;
+}
 @{
     int loggedInUserId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int result) ? result : 0;
 
