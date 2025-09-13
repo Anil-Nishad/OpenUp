@@ -154,6 +154,26 @@
             .then(resp => resp.text())
             .then(html => {
                 document.getElementById('notification-dropdown').innerHTML = html;
+                // After marking as read, fetch the updated unread count
+                updateNotificationCount();
             })
+    }
+
+    // Function to update notification count
+    function updateNotificationCount() {
+        fetch("Notifications/GetUnreadCount", {
+            method: 'GET',
+            headers: {
+                'Content-Type':'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("notifications count updated = ", data.count);
+                document.getElementById("notificationsCount").innerHTML = data.count;
+            })
+            .catch(error => {
+                console.error("Error fetching notification count: ", error);
+            });
     }
 </script>
