@@ -30,26 +30,26 @@ public static class DbInitializer
         if (!userManager.Users.Any(n => !string.IsNullOrEmpty(n.Email)))
         {
             var userPassword = "Coding@1234?";
-            var newUser = new User()
-            {
-                UserName = "Anil_Nishad",
-                Email = "anil.nishad@gmail.com",
-                FullName = "Anil Nishad",
-                ProfilePictureUrl = "https://img-b.udemycdn.com/user/200_H/16004620_10db_5.jpg",
-                EmailConfirmed = true
-            };
+            //var newUser = new User()
+            //{
+            //    UserName = "Anil_Nishad",
+            //    Email = "anil.nishad@gmail.com",
+            //    FullName = "Anil Nishad",
+            //    ProfilePictureUrl = "https://img-b.udemycdn.com/user/200_H/16004620_10db_5.jpg",
+            //    EmailConfirmed = true
+            //};
 
-            var result = await userManager.CreateAsync(newUser, userPassword);
-            if (result.Succeeded)
-                await userManager.AddToRoleAsync(newUser, AppRoles.User);
+            //var result = await userManager.CreateAsync(newUser, userPassword);
+            //if (result.Succeeded)
+            //    await userManager.AddToRoleAsync(newUser, AppRoles.User);
 
 
             var newAdmin = new User()
             {
-                UserName = "admin.admin",
+                UserName = "admin",
                 Email = "admin@gmail.com",
                 FullName = "Admin",
-                ProfilePictureUrl = "https://img-b.udemycdn.com/user/200_H/16004620_10db_5.jpg",
+                ProfilePictureUrl = "https://images.unsplash.com/photo-1527430253228-e93688616381?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Um9ib3R8ZW58MHx8MHx8fDA%3D",
                 EmailConfirmed = true
             };
 
