@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
 using OpenUp.ViewModels.Friends;
 using OpenUpData.Helpers.Constants;
@@ -6,7 +7,7 @@ using OpenUpData.Models;
 using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
-
+[Authorize(Roles = AppRoles.User)]
 public class FriendsController : BaseController
 {
     private readonly IFriendsService _friendsService;

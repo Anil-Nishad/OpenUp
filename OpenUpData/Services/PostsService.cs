@@ -79,6 +79,14 @@ public class PostsService : IPostsService
             _context.Posts.Update(postDb);
             await _context.SaveChangesAsync();
         }
+        //increment number of reports
+        var post = await _context.Posts.FirstOrDefaultAsync(n => n.Id == postId);
+        if (post != null)
+        {
+            post.NrOfReports += 1;
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
+        }
         return postDb;
     }
 

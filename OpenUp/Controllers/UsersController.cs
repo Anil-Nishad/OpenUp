@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
 using OpenUp.ViewModels.Users;
+using OpenUpData.Helpers.Constants;
 using OpenUpData.Models;
 using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
-
+[Authorize(Roles = AppRoles.User)]
 public class UsersController : BaseController
 {
     private readonly IUsersService _userService;

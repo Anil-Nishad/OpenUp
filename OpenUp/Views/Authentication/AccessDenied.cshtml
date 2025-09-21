@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="text-center p-8 bg-white rounded-lg shadow-md max-w-md w-full">
+        <div class="mb-6">
+            <ion-icon name="lock-closed" class="text-6xl text-red-500"></ion-icon>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Access Denied</h1>
+        <p class="text-gray-600 mb-6">You do not have permission to access this resource.</p>
+        
+        @if (!string.IsNullOrEmpty(Context.Request.Query["ReturnUrl"]))
+        {
+            <p class="text-sm text-gray-500 mb-4">
+                You were trying to access: 
+                <span class="font-medium">@Context.Request.Query["ReturnUrl"]</span>
+            </p>
+        }
+        
+        <div class="space-x-4">
+            <a href="/" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors">
+                Go Home
+            </a>
+            <a href="javascript:history.back()" class="inline-block text-blue-500 hover:underline">
+                Go Back
+            </a>
+        </div>
+    </div>
+</div>

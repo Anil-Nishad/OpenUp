@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
+using OpenUpData.Helpers.Constants;
 using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
-
+[Authorize(Roles = AppRoles.User)]
 public class NotificationsController : BaseController
 {
     private readonly INotificationsService _notificationService;

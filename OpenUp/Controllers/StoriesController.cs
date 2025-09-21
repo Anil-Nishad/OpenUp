@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
 using OpenUp.ViewModels.Stories;
+using OpenUpData.Helpers.Constants;
 using OpenUpData.Helpers.Enums;
 using OpenUpData.Models;
 using OpenUpData.Services;
 
 namespace OpenUp.Controllers;
-[Authorize]
+[Authorize(Roles = AppRoles.User)]
 public class StoriesController : BaseController
 {
     private readonly IStoriesService _storiesService;

@@ -26,6 +26,7 @@ builder.Services.AddScoped<IStoriesService, StoriesService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IFriendsService, FriendsService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 //Identity configuration
 
@@ -48,6 +49,15 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Authentication/Login";
     options.AccessDeniedPath = "/Authentication/AccessDenied";
+    
+    // Set cookie expiration to 30 days
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+    
+    // Sliding expiration means the cookie will be renewed on activity
+    options.SlidingExpiration = true;
+    
+    // Ensure cookie is essential
+    options.Cookie.IsEssential = true;
 });
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

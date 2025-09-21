@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OpenUp.ViewModels.Settings;
-using OpenUpData.Services;
 using Microsoft.AspNetCore.Identity;
-using OpenUpData.Models;
+using Microsoft.AspNetCore.Mvc;
 using OpenUp.Controllers.Base;
+using OpenUp.ViewModels.Settings;
+using OpenUpData.Helpers.Constants;
+using OpenUpData.Models;
+using OpenUpData.Services;
 using System.Security.Claims;
 
 
 namespace OpenUp.Controllers;
-[Authorize]
+[Authorize(Roles = $"{AppRoles.User},{AppRoles.Admin}")]
 public class SettingsController : BaseController
 {
     private readonly IUsersService _usersService;

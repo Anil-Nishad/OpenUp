@@ -43,9 +43,15 @@ public class AuthenticationController : Controller
                 await _userManager.AddClaimAsync(existingUser, new Claim(CustomClaim.FullName, existingUser.FullName));
 
             var result = await _signInManager.PasswordSignInAsync(existingUser.UserName, loginVM.Password, false, false);
+            //var result = await _signInManager.PasswordSignInAsync(existingUser.UserName, loginVM.Password, isPersistent: true, lockoutOnFailure: false);
 
         if (result.Succeeded)
-            return RedirectToAction("Index", "Home");
+        {
+            if(User.IsInRole(AppRoles.Admin))
+                return RedirectToAction("Index", "Admin");
+            else
+                return RedirectToAction("Index", "Home");
+        }
 
         ModelState.AddModelError("", "Invalid login attempt");
         return View(loginVM);
@@ -195,6 +201,12 @@ public class AuthenticationController : Controller
     {
         await _signInManager.SignOutAsync();
         return RedirectToAction("Login");
+    }
+
+    [AllowAnonymous]
+    public IActionResult AccessDenied()
+    {
+        return View();
     }
 }
 
